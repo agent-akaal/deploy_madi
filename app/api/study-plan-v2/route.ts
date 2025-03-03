@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     
     // Set a longer timeout for the fetch request
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
+    const timeoutId = setTimeout(() => controller.abort(), 300000); // 30 seconds timeout
 
     // Make the request to the FastAPI backend
     const response = await fetch(`${FASTAPI_URL}/study-plans/v2`, {

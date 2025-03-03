@@ -76,14 +76,21 @@ export default function StudyPlanV2Page() {
     // Make the API request to the V2 endpoint
     const fetchStudyPlan = async () => {
       try {
+        // Set a longer timeout for the fetch request
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 300000); // 30 seconds timeout
+
         const response = await fetch('/api/study-plan-v2', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: storedData,
+          signal: controller.signal, // Use the abort signal
         });
-        
+
+        clearTimeout(timeoutId); // Clear the timeout if the request completes in time
+
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
