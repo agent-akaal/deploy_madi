@@ -1,0 +1,17 @@
+prompt: |
+  Generate 4 specific areas of interest for {subject} appropriate for a {level} level learner.
+  
+  CONTEXT:
+  - Subject: {subject}
+  - Level: {level}
+  
+  REQUIREMENTS:
+  1. Generate exactly 4 options
+  2. Each option should be specific and distinct
+  3. Options should be appropriate for the skill level
+  4. Avoid generic or overlapping areas
+  
+  OUTPUT FORMAT:
+  Return an array of 4 strings ONLY, each representing a specific area of interest.
+  Do not include numbers, bullets, or any formatting. 
+  Do not start with "Here are 4 areas of interest:" or anything similar.

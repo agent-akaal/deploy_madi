@@ -1,0 +1,20 @@
+prompt: |
+  Generate 4 common challenges when learning {subject}.
+  
+  CONTEXT:
+  - Subject: {subject}
+  - Level: {level}
+  - Interests: {interests}
+  - Time commitment: {time}
+  - Learning goal: {goal}
+  
+  REQUIREMENTS:
+  1. Generate exactly 4 challenges
+  2. Challenges should be relevant to the skill level
+  3. Consider the time commitment constraints
+  4. Focus on challenges that could impact the learning goal
+  
+  OUTPUT FORMAT:
+  Return an array of 4 strings ONLY, each describing a specific challenge.
+  Do not include numbers, bullets, or any formatting. 
+  Do not start with "Here are 4 challenges:" or anything similar.

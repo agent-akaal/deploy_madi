@@ -1,0 +1,19 @@
+prompt: | 
+  Generate 4 realistic learning outcomes for {subject}.
+  
+  CONTEXT:
+  - Subject: {subject}
+  - Level: {level}
+  - Interests: {interests}
+  - Time commitment: {time}
+  
+  REQUIREMENTS:
+  1. Generate exactly 4 outcomes
+  2. Each outcome must be achievable within the time frame
+  3. Outcomes should match the skill level
+  4. Focus on practical, measurable results
+  
+  OUTPUT FORMAT:
+  Return an array of 4 strings ONLY, each describing a specific learning outcome.
+  Do not include numbers, bullets, or any formatting. 
+  Do not start with "Here are 4 learning outcomes:" or anything similar.

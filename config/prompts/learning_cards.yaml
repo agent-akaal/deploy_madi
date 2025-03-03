@@ -1,0 +1,21 @@
+prompt: |
+  Generate 10 learning topics with specific details.
+  
+  REQUIREMENTS:
+  1. Each topic should include:
+     - category: [Sciences/Technology/Engineering/Math]
+     - topic: [topic name]
+     - fact: [interesting fact about the topic]
+     - learners: [random number between 10000-50000]
+     - duration: [10-60 mins]
+     - rating: [4.0-5.0]
+     - difficulty: [Beginner/Intermediate/Advanced]
+     - skills: [1-2 most relevant core skills]
+  
+  CONSTRAINTS:
+  1. Include diverse topics across all categories
+  2. Skills should be specific, not generic
+  3. Facts should be engaging and memorable
+  
+  OUTPUT FORMAT:
+  Return a JSON array of 10 objects, each containing the required fields. 

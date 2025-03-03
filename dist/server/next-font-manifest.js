@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/home/aj/code/extras/akaal/streamlit-ui/v2_app/app/layout":["static/media/569ce4b8f30dc480-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';

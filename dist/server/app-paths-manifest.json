@@ -1,0 +1,22 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/ollama/route": "app/api/ollama/route.js",
+  "/api/options/route": "app/api/options/route.js",
+  "/api/study-plan-v2/route": "app/api/study-plan-v2/route.js",
+  "/api/study-plan/route": "app/api/study-plan/route.js",
+  "/auth/callback/route": "app/auth/callback/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/opengraph-image.png/route": "app/opengraph-image.png/route.js",
+  "/twitter-image.png/route": "app/twitter-image.png/route.js",
+  "/chat/page": "app/chat/page.js",
+  "/protected/page": "app/protected/page.js",
+  "/page": "app/page.js",
+  "/learning-map/page": "app/learning-map/page.js",
+  "/questions/page": "app/questions/page.js",
+  "/protected/reset-password/page": "app/protected/reset-password/page.js",
+  "/study-plan-v2/page": "app/study-plan-v2/page.js",
+  "/study-plan/page": "app/study-plan/page.js",
+  "/(auth-pages)/sign-in/page": "app/(auth-pages)/sign-in/page.js",
+  "/(auth-pages)/forgot-password/page": "app/(auth-pages)/forgot-password/page.js",
+  "/(auth-pages)/sign-up/page": "app/(auth-pages)/sign-up/page.js"
+}
