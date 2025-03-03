@@ -62,7 +62,6 @@ export default function StudyPlanV2Page() {
   const [isWaiting, setIsWaiting] = useState<boolean>(false);
 
   useEffect(() => {
-    // Get the request data from localStorage
     const storedData = localStorage.getItem('studyPlanRequest');
     
     if (!storedData) {
@@ -74,10 +73,8 @@ export default function StudyPlanV2Page() {
     const requestBody = JSON.parse(storedData);
     setRequestData(requestBody);
     
-    // Make the API request to the V2 endpoint
     const fetchStudyPlan = async () => {
       try {
-        // Set a longer timeout for the fetch request
         const controller = new AbortController();
         const timeoutId = setTimeout(() => {
           controller.abort();
@@ -90,25 +87,40 @@ export default function StudyPlanV2Page() {
             'Content-Type': 'application/json',
           },
           body: storedData,
-          signal: controller.signal, // Use the abort signal
+          signal: controller.signal,
         });
 
-        clearTimeout(timeoutId); // Clear the timeout if the request completes in time
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
         
-        const data = await response.json();
-        setStudyPlan(data);
+        const { job_id } = await response.json(); // Get job ID
+        await pollJobStatus(job_id); // Poll for job status
       } catch (err) {
-        // Only log the error, do not set it in state
         console.error('Error fetching study plan:', err);
       } finally {
         setIsLoading(false);
       }
     };
-    
+
+    const pollJobStatus = async (jobId: string) => {
+      let isJobCompleted = false;
+
+      while (!isJobCompleted) {
+        const statusResponse = await fetch(`/job-status/${jobId}`);
+        const statusData = await statusResponse.json();
+
+        if (statusData.status === "completed") {
+          setStudyPlan(statusData.result);
+          isJobCompleted = true;
+        } else {
+          await new Promise(resolve => setTimeout(resolve, 5000)); // Poll every 5 seconds
+        }
+      }
+    };
+
     fetchStudyPlan();
   }, []);
 
