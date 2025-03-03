@@ -59,6 +59,7 @@ export default function StudyPlanV2Page() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [requestData, setRequestData] = useState<any>(null);
+  const [isWaiting, setIsWaiting] = useState<boolean>(false);
 
   useEffect(() => {
     // Get the request data from localStorage
@@ -76,14 +77,24 @@ export default function StudyPlanV2Page() {
     // Make the API request to the V2 endpoint
     const fetchStudyPlan = async () => {
       try {
+        // Set a longer timeout for the fetch request
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+          controller.abort();
+          setIsWaiting(true);
+        }, 300000); // 5 minutes timeout
+
         const response = await fetch('/api/study-plan-v2', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: storedData,
+          signal: controller.signal, // Use the abort signal
         });
-        
+
+        clearTimeout(timeoutId); // Clear the timeout if the request completes in time
+
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
@@ -91,7 +102,7 @@ export default function StudyPlanV2Page() {
         const data = await response.json();
         setStudyPlan(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        // Only log the error, do not set it in state
         console.error('Error fetching study plan:', err);
       } finally {
         setIsLoading(false);
@@ -275,11 +286,20 @@ export default function StudyPlanV2Page() {
         </div>
       )}
       
-      {isLoading && (
+      {isLoading && !isWaiting && (
         <div className="text-center p-8">
           <div className="animate-pulse text-xl">Generating your enhanced study plan...</div>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             This may take a moment as we analyze resources and create your personalized schedule.
+          </p>
+        </div>
+      )}
+      
+      {isWaiting && (
+        <div className="text-center p-8">
+          <div className="text-xl">Still waiting for your enhanced study plan...</div>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            Please be patient, this may take a while.
           </p>
         </div>
       )}
