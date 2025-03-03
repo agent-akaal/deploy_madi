@@ -59,9 +59,9 @@ export default function StudyPlanV2Page() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [requestData, setRequestData] = useState<any>(null);
-  const [isWaiting, setIsWaiting] = useState<boolean>(false);
 
   useEffect(() => {
+    // Get the request data from localStorage
     const storedData = localStorage.getItem('studyPlanRequest');
     
     if (!storedData) {
@@ -73,54 +73,31 @@ export default function StudyPlanV2Page() {
     const requestBody = JSON.parse(storedData);
     setRequestData(requestBody);
     
+    // Make the API request to the V2 endpoint
     const fetchStudyPlan = async () => {
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => {
-          controller.abort();
-          setIsWaiting(true);
-        }, 300000); // 5 minutes timeout
-
         const response = await fetch('/api/study-plan-v2', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: storedData,
-          signal: controller.signal,
         });
-
-        clearTimeout(timeoutId);
-
+        
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
         
-        const { job_id } = await response.json(); // Get job ID
-        await pollJobStatus(job_id); // Poll for job status
+        const data = await response.json();
+        setStudyPlan(data);
       } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
         console.error('Error fetching study plan:', err);
       } finally {
         setIsLoading(false);
       }
     };
-
-    const pollJobStatus = async (jobId: string) => {
-      let isJobCompleted = false;
-
-      while (!isJobCompleted) {
-        const statusResponse = await fetch(`/job-status/${jobId}`);
-        const statusData = await statusResponse.json();
-
-        if (statusData.status === "completed") {
-          setStudyPlan(statusData.result);
-          isJobCompleted = true;
-        } else {
-          await new Promise(resolve => setTimeout(resolve, 5000)); // Poll every 5 seconds
-        }
-      }
-    };
-
+    
     fetchStudyPlan();
   }, []);
 
@@ -298,20 +275,11 @@ export default function StudyPlanV2Page() {
         </div>
       )}
       
-      {isLoading && !isWaiting && (
+      {isLoading && (
         <div className="text-center p-8">
           <div className="animate-pulse text-xl">Generating your enhanced study plan...</div>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             This may take a moment as we analyze resources and create your personalized schedule.
-          </p>
-        </div>
-      )}
-      
-      {isWaiting && (
-        <div className="text-center p-8">
-          <div className="text-xl">Still waiting for your enhanced study plan...</div>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Please be patient, this may take a while.
           </p>
         </div>
       )}
